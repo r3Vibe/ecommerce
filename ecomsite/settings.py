@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'ecommerce.apps.EcommerceConfig',
-    'customAuth.apps.CustomauthConfig'
+    'customAuth.apps.CustomauthConfig',
+    'emailService.apps.EmailserviceConfig',
+    'tokenService.apps.TokenserviceConfig',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +145,12 @@ MESSAGE_TAGS = {
     messages.SUCCESS: "success",
     messages.ERROR: "danger",
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'arnabgupta84@gmail.com'
+EMAIL_HOST_PASSWORD = 'ikjrscvywllnnemt'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

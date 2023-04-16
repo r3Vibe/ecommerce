@@ -1,12 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, **rest):
-
         if not email:
             raise ValueError('Email Required')
 
@@ -31,6 +28,18 @@ class UserManager(BaseUserManager):
 
         user.save(using=self._db)
         return user
+
+    def is_active_user(self, email):
+        return self.get(email=email).is_active
+
+    def email_exists(self, email):
+        return self.filter(email=email).exists()
+
+    def get_by_email(self, email):
+        return self.get(email=email)
+
+    def get_by_pk(self, pk):
+        return self.get(pk=pk)
 
 
 class User(AbstractBaseUser):
@@ -84,8 +93,3 @@ class Banner(models.Model):
     @property
     def get_url(self):
         return self.image.url
-
-
-@receiver(post_save, sender=User)
-def send_verification_mail(sender, instance, **kwargs):
-    print("Mail Sent!")

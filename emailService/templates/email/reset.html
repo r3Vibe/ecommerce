@@ -1,0 +1,7 @@
+{% autoescape off %}
+
+Hi {{user.first_name}} click on the link to reset your passsword
+
+http://{{domain}}{% url 'customAuth:verify' uidb64=uid token=token %}
+
+{% endautoescape %}
