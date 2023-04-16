@@ -9,7 +9,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'Product Categories'
 
     def __str__(self):
         return self.name
@@ -26,6 +26,8 @@ class Product(models.Model):
     short_description = models.CharField(max_length=50)
     image = models.ImageField(upload_to='products/')
     is_active = models.BooleanField(default=True)
+    has_variation = models.BooleanField(default=True)
+    price = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Product'
@@ -38,8 +40,13 @@ class Product(models.Model):
         return self.title
 
 
-class VariationTypes(models.Model):
+class Colours(models.Model):
     name = models.CharField(max_length=255)
+    slug = models.SlugField()
+
+    class Meta:
+        verbose_name = 'Colour'
+        verbose_name_plural = 'Colours'
 
     def __str__(self):
         return self.name
@@ -48,10 +55,13 @@ class VariationTypes(models.Model):
         return self.name
 
 
-class VariationValues(models.Model):
+class Sizes(models.Model):
     name = models.CharField(max_length=255)
-    VariationType = models.ForeignKey(
-        to=VariationTypes, on_delete=models.CASCADE)
+    slug = models.SlugField()
+
+    class Meta:
+        verbose_name = 'Size'
+        verbose_name_plural = 'Sizes'
 
     def __str__(self):
         return self.name
@@ -62,9 +72,30 @@ class VariationValues(models.Model):
 
 class Variation(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    variation_type = models.ForeignKey(
-        to=VariationTypes, on_delete=models.CASCADE)
+    colour = models.ForeignKey(
+        to=Colours, on_delete=models.CASCADE)
+    size = models.ForeignKey(
+        to=Sizes, on_delete=models.CASCADE)
     price = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Variation'
+        verbose_name_plural = 'Product Variations'
+
+    def __str__(self):
+        return self.product.title
+
+    def __repr__(self):
+        return self.product.title
+
+
+class GallaryImages(models.Model):
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/')
+
+    class Meta:
+        verbose_name = 'Gallary Image'
+        verbose_name_plural = 'Gallary Images'
 
     def __str__(self):
         return self.product.title

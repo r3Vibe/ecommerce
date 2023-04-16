@@ -67,6 +67,7 @@
                             {% if request.user.is_authenticated %}
                             <small class="title text-muted">Welcome {{request.user.first_name}}!</small>
                             <div> 
+                                <a href="{% url 'customAuth:signin' %}">Dashboard</a> <span class="dark-transp"> | </span>
                                 <a href="{% url 'customAuth:signout' %}">Sign out</a>
                             </div>
                             {% else %}

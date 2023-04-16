@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.html import mark_safe
 
 
 class UserManager(BaseUserManager):
@@ -47,6 +48,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.BigIntegerField(unique=True)
+    image = models.ImageField(upload_to='user/', null=True)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -65,6 +67,11 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def profile_image(self):
+        return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
+
+    profile_image.short_description = 'profile image'
 
     @property
     def is_active(self):
@@ -89,6 +96,10 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Banner'
+        verbose_name_plural = 'Banner Images'
 
     @property
     def get_url(self):

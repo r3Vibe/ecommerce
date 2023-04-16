@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Banner
+import admin_thumbnails
 
 
 class MyUserAdmin(UserAdmin):
-    list_display = ['first_name', 'last_name',
+    list_display = ['profile_image', 'first_name', 'last_name',
                     'email', 'phone', 'date_created', 'active']
     readonly_fields = ['date_created', 'date_modified']
     list_display_links = ['first_name', 'last_name', 'email', 'phone']
@@ -16,7 +17,7 @@ class MyUserAdmin(UserAdmin):
         (
             "Personal Info",
             {
-                "fields": ('first_name', 'last_name',),
+                "fields": ('image', 'first_name', 'last_name',),
             }
         ),
         (
@@ -66,10 +67,18 @@ class MyUserAdmin(UserAdmin):
     )
 
 
+@admin_thumbnails.thumbnail('image', 'preview')
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ['title', 'is_featured']
+    list_display = ['image_thumbnail', 'title', 'is_featured']
     list_editable = ['is_featured']
     list_display_links = ['title']
+    fieldsets = (
+        ("Banner Details", {
+            "fields": (
+                'image_thumbnail', 'image', 'title', 'is_featured'
+            ),
+        }),
+    )
 
 
 admin.site.register(User, MyUserAdmin)
