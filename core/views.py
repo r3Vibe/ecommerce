@@ -9,4 +9,4 @@ def home_page(req):
     context = {
         'banner': currentBanner
     }
-    return render(req, 'test.html', context=context)
+    return render(req, 'index.html', context=context)
