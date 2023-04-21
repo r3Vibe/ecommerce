@@ -5,7 +5,7 @@ import admin_thumbnails
 
 
 class MyUserAdmin(UserAdmin):
-    list_display = ['profile_image', 'first_name', 'last_name',
+    list_display = ['first_name', 'last_name',
                     'email', 'phone', 'date_created', 'active']
     readonly_fields = ['date_created', 'date_modified']
     list_display_links = ['first_name', 'last_name', 'email', 'phone']

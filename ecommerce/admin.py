@@ -1,9 +1,31 @@
 from django.contrib import admin
-from .models import Category, Product, Variation, Colours, Sizes, GallaryImages
+from .models import Category, Product, GallaryImages, Variations, VariationCAtegory, VariationCombinations
 import admin_thumbnails
 
 
+@admin_thumbnails.thumbnail('image')
 class CategryAdmin(admin.ModelAdmin):
+    list_display = ['image_thumbnail', 'name', 'is_active']
+    list_display_links = ['name']
+    list_editable = ['is_active']
+    prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        (
+            'Category Details',
+            {
+                "fields": ('image_thumbnail', 'name', 'slug', 'image'),
+            }
+        ),
+        (
+            'Status',
+            {
+                "fields": ('is_active',),
+            }
+        ),
+    )
+
+
+class VAriationCategryAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active']
     list_display_links = ['name']
     list_editable = ['is_active']
@@ -25,21 +47,28 @@ class CategryAdmin(admin.ModelAdmin):
 
 
 class VariationInline(admin.TabularInline):
-    model = Variation
-    extra = 1
+    model = Variations
+    extra = 0
+
+
+@admin_thumbnails.thumbnail('image')
+class VariationComboInline(admin.TabularInline):
+    model = VariationCombinations
+    prepopulated_fields = {'slug': ('name',)}
+    extra = 0
 
 
 @admin_thumbnails.thumbnail('image')
 class GallaryInline(admin.TabularInline):
     model = GallaryImages
-    extra = 1
+    extra = 0
 
 
 @admin_thumbnails.thumbnail('image', 'preview')
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['image_thumbnail', 'title',
                     'short_description', 'price', 'has_variation', 'is_active']
-    inlines = [VariationInline, GallaryInline]
+    inlines = [VariationInline, VariationComboInline, GallaryInline]
     list_display_links = ['title']
     list_editable = ['is_active']
     prepopulated_fields = {'slug': ('title',)}
@@ -47,7 +76,7 @@ class ProductAdmin(admin.ModelAdmin):
         (
             'Product Details',
             {
-                "fields": ('image_thumbnail', 'title', 'slug', 'description', 'short_description', 'category', 'image', 'has_variation', 'price'),
+                "fields": ('image_thumbnail', 'title', 'slug', 'description', 'short_description', 'category', 'image', 'has_variation', 'price', 'sale_price'),
             }
         ),
     )
@@ -55,5 +84,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategryAdmin)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Colours)
-admin.site.register(Sizes)
+admin.site.register(VariationCAtegory, VAriationCategryAdmin)
