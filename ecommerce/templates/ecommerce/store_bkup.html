@@ -108,55 +108,74 @@
     
     <header class="border-bottom mb-4 pb-3">
             <div class="form-inline">
-                <span class="mr-md-auto">{{count}} {% if count == 1 or count == 0 %}Item {% else %} Items {% endif %}  found </span>
+                <span class="mr-md-auto">{{count}} Items found </span>
+                
             </div>
     </header><!-- sect-heading -->
     
     <div class="row">
-        {% if count == 0 %}
-        <div class="col-md-12">
-            <center>
-                <h3>No Products Found</h3>
-            </center>
-        </div>
-        {% endif %}
         {% for product in products %}
-            <div class="col-md-4">
-                <figure class="card card-product-grid">
-                    <div class="img-wrap"> 
-                        <img src="{{product.image.url}}">
-                    </div> <!-- img-wrap.// -->
-                    <figcaption class="info-wrap">
-                        <div class="fix-height">
-                            <a href="./product-detail.html" class="title">{{product.name}}</a>
-                            <div class="price-wrap mt-2">
-                                {% if product.on_sale %}
-                                    <span class="price">${{product.sale_price}}</span>
-                                    <del class="price-old">${{product.price}}</del>
-                                {% else %}
-                                    <span class="price">${{product.price}}</span>
-                                {% endif %}
-                            </div> <!-- price-wrap.// -->
-                        </div>
-                        <a href="#" class="btn btn-block btn-success">Added to cart </a>
-                    </figcaption>
-                </figure>
-            </div>
-        {% endfor %} 
+            {% if not product.has_variation %}
+                <div class="col-md-4">
+                    <figure class="card card-product-grid">
+                        <div class="img-wrap"> 
+                            <img src="{{product.image.url}}">
+                        </div> <!-- img-wrap.// -->
+                        <figcaption class="info-wrap">
+                            <div class="fix-height">
+                                <a href="./product-detail.html" class="title">{{product.title}}</a>
+                                <div class="price-wrap mt-2">
+                                    {% if product.on_sale %}
+                                        <span class="price">${{product.sale_price}}</span>
+                                        <del class="price-old">${{product.price}}</del>
+                                    {% else %}
+                                        <span class="price">${{product.price}}</span>
+                                    {% endif %}
+                                </div> <!-- price-wrap.// -->
+                            </div>
+                            <a href="#" class="btn btn-block btn-success">Added to cart </a>
+                        </figcaption>
+                    </figure>
+                </div>
+                {% else %}
+                {% for variation in product.variationcombinations_set.all %}
+                    <div class="col-md-4">
+                        <figure class="card card-product-grid">
+                            <div class="img-wrap"> 
+                                <img src="{{variation.image.url}}">
+                            </div> <!-- img-wrap.// -->
+                            <figcaption class="info-wrap">
+                                <div class="fix-height">
+                                    <a href="./product-detail.html" class="title">{{variation.name}}</a>
+                                    <div class="price-wrap mt-2">
+                                        {% if variation.on_sale %}
+                                            <span class="price">${{variation.sale_price}}</span>
+                                            <del class="price-old">${{variation.price}}</del>
+                                        {% else %}
+                                            <span class="price">${{variation.price}}</span>
+                                        {% endif %}
+                                    </div> <!-- price-wrap.// -->
+                                </div>
+                                <a href="#" class="btn btn-block btn-success">Added to cart </a>
+                            </figcaption>
+                        </figure>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
     
     </div> <!-- row end.// -->
     
-    {% if count != 0 %}
+    
     <nav class="mt-4" aria-label="Page navigation sample">
-        <ul class="pagination">
-            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
+      <ul class="pagination">
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
     </nav>
-    {% endif %}
     
         </main> <!-- col.// -->
     
