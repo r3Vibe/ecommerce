@@ -76,7 +76,7 @@ class ProductAdmin(admin.ModelAdmin):
         (
             'Product Details',
             {
-                "fields": ('image_thumbnail', 'title', 'slug', 'description', 'short_description', 'category', 'image', 'has_variation', 'price', 'sale_price'),
+                "fields": ('image_thumbnail', 'title', 'slug', 'description', 'short_description', 'category', 'image', 'has_variation', 'on_sale', 'price', 'sale_price'),
             }
         ),
     )
