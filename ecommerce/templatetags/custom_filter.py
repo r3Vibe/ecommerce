@@ -18,4 +18,19 @@ def objectVals(key, fullObj):
     return strs
 
 
+def attributes(key, obj):
+    data = obj[key]
+
+    strs = ''
+
+    for item in data:
+        strs += f"""
+            <label class="btn btn-light">
+                <input type="radio" name="{key}"> {item.capitalize()}
+            </label>
+        """
+    return strs
+
+
 register.filter('objectVals', objectVals)
+register.filter('attributes', attributes)

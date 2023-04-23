@@ -122,6 +122,9 @@ class VariationCombinations(models.Model):
     def __repr__(self):
         return self.name
 
+    def get_url(self):
+        return reverse('ecommerce:product', args=[self.slug])
+
     class Meta:
         verbose_name = 'Product Variation Combo'
         verbose_name_plural = 'Product Variation Combos'
